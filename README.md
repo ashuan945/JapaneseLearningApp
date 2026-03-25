@@ -206,3 +206,6 @@ Visit `https://localhost:7000` in your browser.
 **Status values** for `UserProgress.Status`: `new` · `flagged` · `learned`
 
 
+## Data Source
+ 
+Vocabulary data is derived from [open-anki-jlpt-decks](https://github.com/jamsinclair/open-anki-jlpt-decks) by jamsinclair, preprocessed and reformatted for use in this app.
