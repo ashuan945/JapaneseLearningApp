@@ -1,0 +1,516 @@
+﻿
+/*Page Layout*/
+.page-bg {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px 20px 40px;
+    min-height: calc(100vh - 58px);
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+/*Profile Card Container*/
+.profile-card {
+    margin-top: 15px;
+    width: 100%;
+    max-width: 800px;
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid #e4e8f0;
+    overflow: hidden;
+}
+
+.profile-layout {
+    display: flex;
+    align-items: stretch;
+}
+
+/* Hero section */
+.profile-hero {
+    background: #1a1f2e;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* vertically center content */
+    gap: 10px;
+    width: 260px;
+    flex-shrink: 0;
+    border-radius: 18px 0 0 18px; /* left corners only */
+}
+
+.avatar-wrap {
+    position: relative;
+    width: 88px;
+    height: 88px;
+}
+
+.avatar-img {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4f5fc4;
+    background: #2d3448;
+    transition: border-color 0.2s;
+}
+
+.avatar-edit-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #4f5fc4;
+    border: 2px solid #1a1f2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+    .avatar-edit-btn svg {
+        width: 12px;
+        height: 12px;
+        fill: #fff;
+    }
+
+.hero-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    font-family: 'DM Sans', Arial, sans-serif;
+    text-align: center;
+}
+
+.hero-email {
+    font-size: 13px;
+    color: #6b738a;
+    font-family: 'DM Sans', Arial, sans-serif;
+    text-align: center;
+    word-break: break-all;
+}
+
+/*Upload Section*/
+.upload-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.file-label {
+    font-size: 12px;
+    color: #9aa3b8;
+    cursor: pointer;
+    padding: 5px 12px;
+    border-radius: 7px;
+    border: 1px solid #2e3448;
+    background: transparent;
+    transition: all 0.15s;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+    .file-label:hover {
+        border-color: #4f5fc4;
+        color: #8898d8;
+    }
+
+.btn-upload {
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'DM Sans', Arial, sans-serif;
+    padding: 5px 14px;
+    border-radius: 7px;
+    border: none;
+    background: #4f5fc4;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+    .btn-upload:hover {
+        background: #3d4daa;
+    }
+
+.upload-message {
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    min-height: 16px;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+/*Profile Form Section*/
+.profile-body {
+    padding: 22px 30px 22px;
+    flex: 1;
+    min-width: 0;
+}
+
+.section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 16px;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+    .profile-field label {
+        font-size: 13px;
+        font-weight: 500;
+        color: #4a5068;
+        font-family: 'DM Sans', Arial, sans-serif;
+    }
+
+    .profile-field input {
+        width: 100%;
+        padding: 11px 14px;
+        font-size: 14px;
+        font-family: 'DM Sans', Arial, sans-serif;
+        border: 1.5px solid #dde2ee;
+        border-radius: 9px;
+        outline: none;
+        color: #1a1f2e;
+        background: #fff;
+        transition: border-color 0.15s;
+        box-sizing: border-box;
+        margin: 0;
+        box-shadow: none;
+    }
+
+        .profile-field input::placeholder {
+            color: #b0b8cc;
+        }
+
+        .profile-field input:focus {
+            border-color: #4f5fc4;
+            box-shadow: none;
+        }
+
+.profile-divider {
+    height: 1px;
+    background: #f0f2f8;
+    margin: 20px 0;
+}
+
+/*Update Buttons*/
+.btn-update {
+    width: 100%;
+    padding: 12px 0;
+    border-radius: 10px;
+    border: none;
+    background: #4f5fc4;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'DM Sans', Arial, sans-serif;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    margin-top: 4px;
+}
+
+    .btn-update:hover {
+        background: #3d4daa;
+    }
+
+    .btn-update:active {
+        transform: scale(0.98);
+    }
+
+.profile-message {
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    min-height: 18px;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+/* Responsive — stack on small screens */
+@media (max-width: 600px) {
+    .profile-layout {
+        flex-direction: column;
+    }
+
+    .profile-hero {
+        width: 100%;
+        border-radius: 18px 18px 0 0; /* top corners only when stacked */
+        padding: 28px 20px;
+    }
+
+    .profile-body {
+        padding: 24px 20px 20px;
+    }
+
+    .page-bg {
+        padding: 20px 12px 40px;
+    }
+}
+
+/* Crop modal */
+.crop-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.crop-modal-inner {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 420px;
+    width: 90%;
+}
+
+.crop-modal-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1f2e;
+    margin-bottom: 16px;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.crop-canvas-wrap {
+    max-height: 300px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.crop-modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.btn-crop-confirm {
+    flex: 1;
+    padding: 11px 0;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'DM Sans', Arial, sans-serif;
+    border-radius: 9px;
+    border: none;
+    background: #4f5fc4;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+    .btn-crop-confirm:hover {
+        background: #3d4daa;
+    }
+
+.btn-crop-cancel {
+    flex: 1;
+    padding: 11px 0;
+    font-size: 14px;
+    font-family: 'DM Sans', Arial, sans-serif;
+    border-radius: 9px;
+    border: 1.5px solid #dde2ee;
+    background: #fff;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+    .btn-crop-cancel:hover {
+        border-color: #4f5fc4;
+        color: #4f5fc4;
+    }
+
+/*Danger zone (Delete account)*/
+.danger-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0 16px;
+}
+
+    .danger-divider span {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #e53935;
+        white-space: nowrap;
+    }
+
+    .danger-divider::before,
+    .danger-divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: #fde8e8;
+    }
+
+.danger-zone {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff8f8;
+    border: 1px solid #fde8e8;
+    border-radius: 10px;
+    padding: 12px 16px;
+    gap: 12px;
+}
+
+.danger-zone-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.danger-zone-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1f2e;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.danger-zone-desc {
+    font-size: 12px;
+    color: #9aa3b8;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.btn-delete-account {
+    flex-shrink: 0;
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: 1.5px solid #e53935;
+    background: transparent;
+    color: #e53935;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'DM Sans', Arial, sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+    .btn-delete-account:hover {
+        background: #e53935;
+        color: #fff;
+    }
+
+    .btn-delete-account:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+
+/* Delete confirm modal */
+.delete-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-modal-inner {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 24px 24px;
+    max-width: 380px;
+    width: 90%;
+}
+
+.delete-modal-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fdecea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+}
+
+    .delete-modal-icon svg {
+        width: 22px;
+        height: 22px;
+        fill: #e53935;
+    }
+
+.delete-modal-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1a1f2e;
+    text-align: center;
+    margin-bottom: 8px;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.delete-modal-body {
+    font-size: 13px;
+    color: #6b738a;
+    text-align: center;
+    margin-bottom: 22px;
+    line-height: 1.6;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.delete-modal-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-delete-confirm {
+    flex: 1;
+    padding: 12px 0;
+    border-radius: 9px;
+    border: none;
+    background: #e53935;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'DM Sans', Arial, sans-serif;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+    .btn-delete-confirm:hover {
+        background: #c62828;
+    }
+
+    .btn-delete-confirm:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+.btn-delete-cancel {
+    flex: 1;
+    padding: 12px 0;
+    border-radius: 9px;
+    border: 1.5px solid #dde2ee;
+    background: #fff;
+    color: #555;
+    font-size: 14px;
+    font-family: 'DM Sans', Arial, sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+    .btn-delete-cancel:hover {
+        border-color: #4f5fc4;
+        color: #4f5fc4;
+    }

@@ -1,0 +1,101 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - JapaneseLearning</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="~/css/layout.css" />
+    <!-- Page-specific CSS -->
+    @RenderSection("Styles", required: false)
+
+</head>
+
+
+
+<body>
+    <nav class="navbar">
+        <!-- Left side: brand + navigation links -->
+        <div class="nav-left">
+            <!-- Brand -->
+            <div class="nav-brand">
+                <div class="nav-brand-dot"></div>
+                日本語
+            </div>
+
+            <!-- Main navigation links -->
+            <div class="nav-links">
+                <a href="/Vocabulary" class="nav-link">Vocabulary</a>
+                <a href="/Flashcards" class="nav-link">Flashcards</a>
+                <a href="/Quiz" class="nav-link">Quiz</a>
+                <a href="/Dashboard" class="nav-link">Dashboard</a>
+            </div>
+        </div>
+
+        <!-- Right side: user actions -->
+        <div class="nav-right">
+            <!-- Welcome text -->
+            <span id="welcomeUser" class="nav-welcome"></span>
+            <div class="nav-divider" id="navDivider"></div>
+
+            <!-- Login button (shown when not authenticated) -->
+            <a href="/Auth/Login" id="loginLink" class="nav-btn-primary">Login</a>
+
+            <!-- Profile dropdown (shown when authenticated) -->
+            <div class="profile-container" id="profileContainer">
+                <img id="profileIcon" class="avatar" style="display:none" src="/images/default-avatar.png" />
+                
+                <!-- Dropdown menu -->
+                <div id="profileMenu" class="dropdown">
+                    <a href="/Profile">Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/Auth/Login" class="nav-logout" onclick="logout()">Logout</a>
+                </div>
+            </div>
+
+            <!-- Mobile menu toggle -->
+            <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/Vocabulary" class="nav-link">Vocabulary</a>
+        <a href="/Flashcards" class="nav-link">Flashcards</a>
+        <a href="/Quiz" class="nav-link">Quiz</a>
+        <a href="/Dashboard" class="nav-link">Dashboard</a>
+
+        <!-- Bottom section: user actions -->
+        <div class="mobile-menu-bottom">
+            <span class="mobile-welcome" id="mobileWelcome"></span>
+            <a href="/Auth/Login" class="mobile-login" id="mobileLoginLink">Login</a>
+            <a href="/Auth/Login" class="mobile-logout" id="mobileLogoutLink" onclick="logout()" style="display:none">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container">
+        @RenderBody()
+    </div>
+
+
+
+    <!-- Global API base URL - sourced from appsettings.json -->
+    @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+    <script>
+        window.API_BASE = "@Configuration["ApiBaseUrl"]";
+    </script>
+
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/layout.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

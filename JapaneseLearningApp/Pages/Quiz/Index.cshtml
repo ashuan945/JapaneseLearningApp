@@ -1,0 +1,80 @@
+﻿@page
+@model JapaneseLearningApp.Pages.Quiz.IndexModel
+@{
+    ViewData["Title"] = "Quiz";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quiz.css" />
+    <link rel="stylesheet" href="~/css/audio.css" />
+}
+
+<div class="quiz-wrap">
+    <div class="quiz-header">
+        <span class="quiz-title">Quiz</span>
+        <div class="level-pills" id="pills"></div>
+    </div>
+
+    <div class="quiz-layout">
+
+        <!-- Quiz card -->
+        <div class="quiz-card">
+            <!-- Progress -->
+            <div class="progress-row">
+                <div class="progress-bg">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <span class="progress-label" id="progress-label">0 / 10</span>
+            </div>
+
+            <!-- Score summary (during quiz) -->
+            <div class="score-row">
+                <span class="score-chip score-correct" id="score-correct">✓ 0 correct</span>
+                <span class="score-chip score-wrong" id="score-wrong">✗ 0 wrong</span>
+            </div>
+
+            <!-- Question -->
+            <div class="question-row">
+                <div class="question-word" id="question"></div>
+                <button class="btn-audio" id="audioBtn" onclick="playAudio(event)" title="Play pronunciation" aria-label="Play pronunciation">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Answer Options -->
+            <div class="options" id="options"></div>
+
+            <!-- Result feedback -->
+            <div class="result-row" id="result"></div>
+
+            <!-- Actions -->
+            <div class="bottom-row">
+                <button class="btn-next" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+                <button class="btn-restart" id="restartBtn" onclick="startQuiz()">Restart</button>
+            </div>
+        </div>
+
+        <!-- Score card (visible only after quiz ends) -->
+        <div class="score-card" id="scoreCard">
+            <div class="score-card-title">Final score</div>
+            <div class="score-card-number" id="sc-number">—</div>
+            <div class="score-card-sub" id="sc-pct">—</div>
+            <div class="score-card-divider"></div>
+            <div class="score-card-chips">
+                <div class="score-card-chip chip-correct" id="sc-correct">✓ 0 correct</div>
+                <div class="score-card-chip chip-wrong" id="sc-wrong">✗ 0 wrong</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/quiz.js"></script>
+}

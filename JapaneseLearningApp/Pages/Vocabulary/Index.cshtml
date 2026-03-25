@@ -1,0 +1,272 @@
+﻿@page
+@model JapaneseLearningApp.Pages.Vocabulary.IndexModel
+@{
+    ViewData["Title"] = "Vocabulary";
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet" href="~/css/vocabulary.css" />
+<link rel="stylesheet" href="~/css/ai.css" />
+
+<div class="vocab-page">
+
+    <!-- Header -->
+    <div class="vocab-header">
+        <div class="vocab-title-group">
+            <span class="vocab-title-jp">語彙リスト</span>
+            <h1 class="vocab-title">Vocabulary List</h1>
+        </div>
+        <span class="vocab-count-badge">@Model.TotalCount words</span>
+    </div>
+
+    <!-- Level Filter Tabs -->
+    <div class="filter-bar">
+        @foreach (var level in JapaneseLearningApp.Pages.Vocabulary.IndexModel.Levels)
+        {
+            var isActive = Model.SelectedLevel == level;
+            var href = $"?Level={level}&SelectedStatus={Model.SelectedStatus}&PageNumber=1&Search={Model.Search}";
+            <a href="@href" class="filter-tab @(isActive ? "active" : "")">
+                @if (level != "ALL")
+                {
+                    <span class="level-dot dot-@level"></span>
+                }
+                @level
+            </a>
+        }
+        @if (Model.IsLoggedIn)
+        {
+            <button type="button" class="reset-btn" onclick="openResetModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                </svg>
+                Reset status
+            </button>
+        }
+    </div>
+
+    <!-- Status Filter (only shown when logged in) -->
+    @if (Model.IsLoggedIn)
+    {
+        <div class="status-bar">
+            @{
+                var statuses = new[] {
+                ("ALL",     "All statuses", "all"),
+                ("new",     "New",          "new"),
+                ("flagged", "Flagged",      "flagged"),
+                ("learned", "Learned",      "learned"),
+                };
+            }
+            @foreach (var (val, label, pip) in statuses)
+            {
+                var isActive = Model.SelectedStatus == val;
+                var href = $"?Level={Model.SelectedLevel}&SelectedStatus={val}&PageNumber=1&Search={Model.Search}";
+                <a href="@href" class="status-tab @(isActive ? "active" : "")">
+                    <span class="status-pip pip-@pip"></span>
+                    @label
+                </a>
+            }
+        </div>
+    }
+
+    <!-- Search bar -->
+    <form method="get" class="search-bar">
+        <input type="hidden" name="Level" value="@Model.SelectedLevel" />
+        <input type="hidden" name="SelectedStatus" value="@Model.SelectedStatus" />
+        <input type="hidden" name="PageNumber" value="1" />
+
+        <input type="text"
+               name="Search"
+               value="@Model.Search"
+               placeholder="Search Japanese, hiragana, or meaning..."
+               class="search-input" />
+        <button type="submit" class="search-btn">Search</button>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Search))
+        {
+            <a href="?Level=@Model.SelectedLevel&SelectedStatus=@Model.SelectedStatus&PageNumber=1" class="search-clear">✕ Clear</a>
+        }
+    </form>
+
+    <!-- Vocabulary Table -->
+    <div class="vocab-table-wrapper">
+        @if (Model.VocabularyList.Count == 0)
+        {
+            <div class="empty-state">
+                <div class="empty-state-jp">空</div>
+                <p>No vocabulary found for this level.</p>
+            </div>
+        }
+        else
+        {
+            <table class="vocab-table">
+                <thead>
+                    <tr>
+                        <th>Japanese</th>
+                        <th>Hiragana</th>
+                        <th>Meaning</th>
+                        <th>Level</th>
+                        @if (Model.IsLoggedIn)
+                        {
+                            <th>Status</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var word in Model.VocabularyList)
+                    {
+                        <tr class="vocab-row" onclick="openAIModalFromRow(@word.Id, this)">
+                            <td class="cell-jp">@word.JapaneseWord</td>
+                            <td class="cell-hiragana">@word.Hiragana</td>
+                            <td class="cell-meaning">@word.Meaning</td>
+                            <td>
+                                <span class="level-tag level-@word.Level">@word.Level</span>
+                            </td>
+                            @if (Model.IsLoggedIn)
+                            {
+                                <td class="cell-status" onclick="event.stopPropagation(); toggleStatus(@word.Id, '@word.Status')">
+                                    <span id="status-@word.Id">
+                                        @if (word.Status == "learned")
+                                        {
+                                            <span style="background:#e8f5e9;color:#2e7d32;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;">Learned</span>
+                                        }
+                                        else if (word.Status == "flagged")
+                                        {
+                                            <span style="background:#fff8e0;color:#b87800;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;">Flagged</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="background:#f0f0f0;color:#888;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;">New</span>
+                                        }
+                                    </span>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        
+        <!-- Ai modal -->
+        <div class="ai-modal-backdrop" id="aiModalBackdrop" onclick="handleAIBackdropClick(event)">
+            <div class="ai-modal" id="aiModal">
+                <div class="ai-modal-handle"></div>
+                <div class="ai-modal-header">
+                    <div class="ai-modal-word">
+                        <span class="ai-modal-kanji" id="aiModalKanji"></span>
+                        <span class="ai-modal-hira" id="aiModalHira"></span>
+                    </div>
+                    <span class="ai-modal-meaning-badge" id="aiModalMeaning"></span>
+                    <button class="ai-modal-close" onclick="closeAIModal()" aria-label="Close">✕</button>
+                </div>
+                <div class="ai-modal-body">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                        <div class="ai-section-label" style="margin-bottom:0;">Explanation</div>
+                        <button class="btn-regenerate" id="btnRegenerate" onclick="regenerateAI()" @(!Model.IsLoggedIn ? "disabled" : "")>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                            </svg>
+                            Regenerate
+                        </button>
+                    </div>
+                    <div id="aiExplanation" class="ai-explanation-text"></div>
+                    <div class="ai-divider"></div>
+                    <div class="ai-section-label">Example sentences</div>
+                    <ul class="ai-examples-list" id="aiExamples"></ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    @if (Model.TotalPages > 1)
+    {
+        var level = Model.SelectedLevel;
+        var current = Model.CurrentPage;
+        var total = Model.TotalPages;
+
+        int rangeStart = Math.Max(1, current - 2);
+        int rangeEnd = Math.Min(total, current + 3);
+
+        <div class="pagination-bar">
+            <span class="pagination-info">
+                Page @current of @total &mdash; @Model.TotalCount results
+            </span>
+            
+            <div class="pagination-controls">
+                <!-- previous btn -->
+                @if (current > 1)
+                {
+                    <a href="?Level=@level&SelectedStatus=@Model.SelectedStatus&PageNumber=@(current - 1)&Search=@Model.Search" class="page-btn">&#8592;</a>
+                }
+                else
+                {
+                    <span class="page-btn disabled">&#8592;</span>
+                }
+                <!-- first btn -->
+                @if (rangeStart > 1)
+                {
+                    <a href="?Level=@level&SelectedStatus=@Model.SelectedStatus&PageNumber=1&Search=@Model.Search" class="page-btn">&#8676;</a>
+                    if (rangeStart > 1)
+                    {
+                        <span class="page-ellipsis">&hellip;</span>
+                    }
+                }
+                <!-- numbered pages -->
+                @for (int p = rangeStart; p <= rangeEnd; p++)
+                {
+                    <a href="?Level=@level&SelectedStatus=@Model.SelectedStatus&PageNumber=@p&Search=@Model.Search"
+                       class="page-btn @(p == current ? "active" : "")">@p</a>
+                }
+                <!-- last btns -->
+                @if (rangeEnd < total)
+                {
+                    if (rangeEnd < total - 1)
+                    {
+                        <span class="page-ellipsis">&hellip;</span>
+                    }
+                    <a href="?Level=@level&SelectedStatus=@Model.SelectedStatus&PageNumber=@total&Search=@Model.Search" class="page-btn">@total</a>
+                }
+                <!-- next btn -->
+                @if (current < total)
+                {
+                    <a href="?Level=@level&SelectedStatus=@Model.SelectedStatus&PageNumber=@(current + 1)&Search=@Model.Search" class="page-btn">&#8594;</a>
+                }
+                else
+                {
+                    <span class="page-btn disabled">&#8594;</span>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Reset Confirmation Modal -->
+    <div class="reset-modal-backdrop" id="resetModalBackdrop" onclick="handleBackdropClick(event)">
+        <div class="reset-modal">
+            <div class="reset-modal-icon">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 3v7M10 14v1" stroke="#c0392b" stroke-width="2" stroke-linecap="round" />
+                    <circle cx="10" cy="10" r="8.5" stroke="#c0392b" stroke-width="1.5" />
+                </svg>
+            </div>
+            <p class="reset-modal-title">Reset vocabulary status?</p>
+            <p class="reset-modal-body" id="resetModalBody"></p>
+            <div class="reset-modal-actions">
+                <button class="btn-cancel" onclick="closeResetModal()">Cancel</button>
+                <button class="btn-confirm" onclick="confirmReset()">Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/vocabulary.js"></script>
+    <script src="~/js/ai.js"></script>
+    <script>
+        window.SelectedLevel = "@Model.SelectedLevel";
+    </script>
+}
+

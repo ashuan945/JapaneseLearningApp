@@ -1,0 +1,6 @@
+@JapaneseLearningApp_HostAddress = http://localhost:5004
+
+GET {{JapaneseLearningApp_HostAddress}}/vocabulary/
+Accept: application/json
+
+###

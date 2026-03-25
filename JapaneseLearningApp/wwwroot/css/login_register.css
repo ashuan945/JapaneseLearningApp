@@ -1,0 +1,157 @@
+﻿
+/* Page background layout (center the card) */
+.page-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 58px);
+    padding: 30px 20px;
+    background: #edf1fa;
+}
+
+/* Main card container */
+.card {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 18px;
+    padding: 28px 36px 28px;
+    border: 1px solid #e4e8f0;
+}
+
+/* Brand style */
+.brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 28px;
+}
+
+.brand-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4f5fc4;
+    flex-shrink: 0;
+}
+
+.brand-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2d3189;
+}
+
+/* Page heading */
+.heading {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1f2e;
+    text-align: center;
+    margin-bottom: 6px;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+/* Subtitle text */
+.sub {
+    font-size: 13px;
+    color: #9aa3b8;
+    text-align: center;
+    margin-bottom: 28px;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+/* Input field */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+    .field label {
+        font-size: 13px;
+        font-weight: 500;
+        color: #4a5068;
+        font-family: 'DM Sans', Arial, sans-serif;
+    }
+
+    .field input {
+        width: 100%;
+        padding: 11px 14px;
+        font-size: 14px;
+        font-family: 'DM Sans', Arial, sans-serif;
+        border: 1.5px solid #dde2ee;
+        border-radius: 9px;
+        outline: none;
+        color: #1a1f2e;
+        background: #fff;
+        transition: border-color 0.15s;
+        box-sizing: border-box;
+        margin: 0;
+        box-shadow: none;
+    }
+
+        .field input::placeholder {
+            color: #b0b8cc;
+        }
+
+        .field input:focus {
+            border-color: #4f5fc4;
+            box-shadow: none;
+        }
+
+/* Button style */
+.btn-reg-log {
+    width: 100%;
+    padding: 13px 0;
+    margin-top: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'DM Sans', Arial, sans-serif;
+    background: #4f5fc4;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+}
+
+    .btn-reg-log:hover {
+        background: #3d4daa;
+    }
+
+    .btn-reg-log:active {
+        transform: scale(0.98);
+    }
+
+/* Error / success message */
+.message-reg-log {
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #c0392b;
+    text-align: center;
+    min-height: 18px;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+/* Footer section */
+.footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #9aa3b8;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+    .footer a {
+        color: #4f5fc4;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }

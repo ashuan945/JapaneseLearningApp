@@ -1,0 +1,120 @@
+﻿@page
+@model JapaneseLearningApp.Pages.Profile.IndexModel
+@{
+    ViewData["Title"] = "User Profile";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+}
+
+<div class="page-bg">
+    <div class="profile-card">
+        <div class="profile-layout">
+
+            <!-- Hero -->
+            <div class="profile-hero">
+                <!-- Avatar -->
+                <div class="avatar-wrap">
+                    <img class="avatar-img" id="profilePreview" src="/images/default-avatar.png" />
+                    <label class="avatar-edit-btn" for="fileInput">
+                        <svg viewBox="0 0 16 16"><path d="M11.5 2.5l2 2L5 13H3v-2L11.5 2.5zM13 1l2 2-1 1-2-2 1-1z" /></svg>
+                    </label>
+                </div>
+
+                <!-- User identity -->
+                <div class="hero-name" id="heroName"></div>
+                <div class="hero-email" id="heroEmail"></div>
+
+                <!-- Image upload controls -->
+                <div class="upload-row">
+                    <label class="file-label" for="fileInput" id="fileLabel">Choose image</label>
+                    <input type="file" id="fileInput" style="display:none" accept="image/*" />
+                    <button class="btn-upload" onclick="uploadImage()">Upload</button>
+                </div>
+                <div class="upload-message" id="uploadMessage"></div>
+            </div>
+
+            <!-- Profile form -->
+            <div class="profile-body">
+                <!-- Account details -->
+                <div class="section-label">Account details</div>
+
+                <div class="profile-field">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" />
+                </div>
+                <div class="profile-field">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" />
+                </div>
+
+                <!-- Divider -->
+                <div class="profile-divider"></div>
+
+                <!-- Password update -->
+                <div class="section-label">Change password</div>
+                <div class="profile-field">
+                    <label for="password">New password</label>
+                    <input id="password" type="password" placeholder="Leave blank to keep current" />
+                </div>
+
+                <!-- Save button -->
+                <button class="btn-update" onclick="updateProfile()">Save changes</button>
+                <p class="profile-message" id="profileMessage"></p>
+
+                <!-- Danger zone -->
+                <div class="danger-divider">
+                    <span>Danger zone</span>
+                </div>
+                <div class="danger-zone">
+                    <div class="danger-zone-text">
+                        <span class="danger-zone-title">Delete account</span>
+                        <span class="danger-zone-desc">Permanently remove your account and all data.</span>
+                    </div>
+                    <button class="btn-delete-account" onclick="openDeleteModal()">Delete</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Crop modal -->
+<div class="crop-modal" id="cropModal">
+    <div class="crop-modal-inner">
+        <div class="crop-modal-title">Crop your photo</div>
+        <div class="crop-canvas-wrap">
+            <img id="cropImage" style="max-width:100%;" />
+        </div>
+        <div class="crop-modal-actions">
+            <button class="btn-crop-confirm" onclick="confirmCrop()">Crop & save</button>
+            <button class="btn-crop-cancel" onclick="cancelCrop()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete modal -->
+<div class="delete-modal" id="deleteModal">
+    <div class="delete-modal-inner">
+        <div class="delete-modal-icon">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" /></svg>
+        </div>
+        <div class="delete-modal-title">Delete your account?</div>
+        <div class="delete-modal-body">
+            This will permanently remove your account and all associated data. This action cannot be reversed.
+        </div>
+        <div class="delete-modal-actions">
+            <button class="btn-delete-cancel" onclick="closeDeleteModal()">Cancel</button>
+            <button class="btn-delete-confirm" id="deleteConfirmBtn" onclick="deleteAccount()">Delete account</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script src="~/js/profile.js"></script>
+}

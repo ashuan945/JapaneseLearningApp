@@ -1,0 +1,131 @@
+﻿@page
+@model JapaneseLearningApp.Pages.Flashcards.IndexModel
+@{
+    ViewData["Title"] = "Flashcards";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/flashcards.css" />
+    <link rel="stylesheet" href="~/css/audio.css" />
+    <link rel="stylesheet" href="~/css/ai.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+}
+
+<div class="fc-root">
+    <div class="fc-header">
+        <span class="fc-title">Flashcards</span>
+        <div class="fc-level-pills" id="pills"></div>
+    </div>
+
+    <!-- Flashcard -->
+    <div class="scene" id="scene" onclick="flipCard()">
+        <div class="card-3d" id="card3d">
+            <div class="card-face card-front">
+                <div class="card-corner-deco" id="level-badge"></div>
+                <div class="card-face-front-deco"></div>
+                <div class="kanji-text fade-in" id="japanese"></div>
+                <div class="hiragana-text fade-in" id="hiragana"></div>
+                <div class="hint-text">tap to reveal</div>
+                <button class="btn-audio" onclick="playAudio(event)" title="Play pronunciation" aria-label="Play pronunciation">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="card-face card-back">
+                <div class="meaning-text fade-in" id="meaning"></div>
+                <div class="meaning-hint">tap to flip back</div>
+                <button class="btn-ai" id="btnAI" onclick="showAI(event)">
+                    <span class="ai-icon">✦</span> Explain
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Completion screen -->
+    <div class="fc-complete" id="completeScreen">
+        <div class="complete-kana">完了</div>
+        <div class="complete-title" id="completeTitle">Level Complete!</div>
+        <div class="complete-sub" id="completeSub">You've reviewed all the cards in this level.</div>
+        <div class="complete-stats">
+        </div>
+        <button class="btn-restart" onclick="openResetModal()">↺ Review again</button>
+    </div>
+
+    <!-- Next & flag button -->
+    <div class="fc-controls" id="fcControls">
+        <button class="btn-next" onclick="nextCard()">Next card →</button>
+        <button class="btn-flag" id="flagBtn" onclick="toggleFlag()">
+            <span class="flag-icon">🚩</span>
+            <span id="flagLabel">Flag</span>
+        </button>
+    </div>
+
+    <!-- Progress row -->
+    <div class="progress-row" id="progressRow">
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <span class="progress-count" id="progress-count">0 seen</span>
+    </div>
+
+    <!-- Reset Modal -->
+    <div class="reset-modal-backdrop" id="resetModalBackdrop" onclick="handleBackdropClick(event)">
+        <div class="reset-modal">
+            <div class="reset-modal-icon">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 3v7M10 14v1" stroke="#c0392b" stroke-width="2" stroke-linecap="round" />
+                    <circle cx="10" cy="10" r="8.5" stroke="#c0392b" stroke-width="1.5" />
+                </svg>
+            </div>
+            <p class="reset-modal-title">Reset flashcards progress?</p>
+            <p class="reset-modal-body" id="resetModalBody"></p>
+            <div class="reset-modal-actions">
+                <button class="btn-cancel" onclick="closeResetModal()">Cancel</button>
+                <button class="btn-confirm" onclick="confirmReset()">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ai response -->
+    <div class="ai-modal-backdrop" id="aiModalBackdrop" onclick="handleAIBackdropClick(event)">
+        <div class="ai-modal" id="aiModal">
+            <div class="ai-modal-handle"></div>
+            <div class="ai-modal-header">
+                <div class="ai-modal-word">
+                    <span class="ai-modal-kanji" id="aiModalKanji"></span>
+                    <span class="ai-modal-hira" id="aiModalHira"></span>
+                </div>
+                <span class="ai-modal-meaning-badge" id="aiModalMeaning"></span>
+                <button class="ai-modal-close" onclick="closeAIModal()" aria-label="Close">✕</button>
+            </div>
+            <div class="ai-modal-body">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                    <div class="ai-section-label" style="margin-bottom:0;">Explanation</div>
+                    <button class="btn-regenerate" id="btnRegenerate" onclick="regenerateAI()">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                        </svg>
+                        Regenerate
+                    </button>
+                </div>
+                <div id="aiExplanation" class="ai-explanation-text"></div>
+                <div class="ai-divider"></div>
+                <div class="ai-section-label">Example sentences</div>
+                <ul class="ai-examples-list" id="aiExamples"></ul>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/flashcards.js"></script>
+    <script src="~/js/ai.js"></script>
+}

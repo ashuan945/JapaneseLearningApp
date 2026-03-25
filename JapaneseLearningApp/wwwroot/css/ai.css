@@ -1,0 +1,433 @@
+﻿
+/* ── AI Explain Button (card back) ── */
+.btn-ai {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.9);
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: background 0.18s, border-color 0.18s, transform 0.12s;
+}
+
+    .btn-ai:hover {
+        background: rgba(255,255,255,0.22);
+        border-color: rgba(255,255,255,0.6);
+        transform: translateY(-1px);
+    }
+
+    .btn-ai:active {
+        transform: scale(0.97);
+    }
+
+    .btn-ai .ai-icon {
+        font-size: 15px;
+        line-height: 1;
+    }
+    /* pulse ring while loading */
+    .btn-ai.loading .ai-icon {
+        animation: aiPulse 0.9s ease-in-out infinite;
+    }
+
+@keyframes aiPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.45;
+        transform: scale(1.18);
+    }
+}
+
+/* ── AI Modal Backdrop ── */
+.ai-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 20, 40, 0.45);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+    padding: 0 0 env(safe-area-inset-bottom, 0);
+}
+
+    .ai-modal-backdrop.open {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+/* ── AI Modal Sheet ── */
+.ai-modal {
+    width: 100%;
+    max-width: 800px;
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    padding: 0 0 2rem;
+    transform: translateY(100%);
+    transition: transform 0.32s cubic-bezier(0.34, 1.10, 0.64, 1);
+    overflow: hidden;
+    box-shadow: 0 -8px 40px rgba(26,26,46,0.14);
+}
+
+.ai-modal-backdrop.open .ai-modal {
+    transform: translateY(0);
+}
+
+/* drag handle */
+.ai-modal-handle {
+    width: 36px;
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    margin: 12px auto 0;
+}
+
+/* modal header strip */
+.ai-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.4rem 0.75rem;
+    border-bottom: 1px solid #f0ede6;
+}
+
+.ai-modal-word {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.ai-modal-kanji {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #2d3189;
+    line-height: 1;
+}
+
+.ai-modal-hira {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 14px;
+    color: #999;
+}
+
+.ai-modal-meaning-badge {
+    font-size: 12px;
+    font-weight: 500;
+    background: #f0f1fd;
+    color: #4f5fc4;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-left: auto;
+    margin-right: 12px;
+    white-space: nowrap;
+}
+
+.ai-modal-close {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: #f4f4f4;
+    color: #999;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+    font-family: 'DM Sans', sans-serif;
+}
+
+    .ai-modal-close:hover {
+        background: #e8e8e8;
+        color: #333;
+    }
+
+/* modal body */
+.ai-modal-body {
+    padding: 1.1rem 1.4rem 0;
+}
+
+/* section label */
+.ai-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #bbb;
+    margin-bottom: 6px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* explanation text */
+.ai-explanation-text {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #3a3a5a;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 48px;
+}
+
+/* skeleton shimmer */
+.ai-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ai-skeleton-line {
+    height: 14px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite;
+}
+
+    .ai-skeleton-line:nth-child(2) {
+        width: 82%;
+    }
+
+    .ai-skeleton-line:nth-child(3) {
+        width: 65%;
+    }
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* divider */
+.ai-divider {
+    height: 1px;
+    background: #f0ede6;
+    margin: 1rem 0;
+}
+
+/* example sentences */
+.ai-examples-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ai-example-item {
+    background: #f8f8fc;
+    border: 1px solid #ecedf8;
+    border-radius: 10px;
+    padding: 10px 14px;
+    opacity: 0;
+    transform: translateY(6px);
+    animation: exampleIn 0.25s ease forwards;
+}
+
+    .ai-example-item:nth-child(1) {
+        animation-delay: 0.05s;
+    }
+
+    .ai-example-item:nth-child(2) {
+        animation-delay: 0.12s;
+    }
+
+    .ai-example-item:nth-child(3) {
+        animation-delay: 0.19s;
+    }
+
+@keyframes exampleIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ai-example-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15px;
+    color: #2d3189;
+    line-height: 1.5;
+}
+
+.ai-example-en {
+    font-size: 13px;
+    color: #888;
+    margin-top: 3px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* error state */
+.ai-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #c0392b;
+    background: #fadbd8;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+
+/* Regenerate button */
+.btn-regenerate {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1.5px solid #e0e0e0;
+    background: #fafafa;
+    color: #888;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    line-height: 1;
+}
+
+    .btn-regenerate:hover {
+        border-color: #4f5fc4;
+        color: #4f5fc4;
+        background: #f0f1fd;
+    }
+
+    .btn-regenerate:active {
+        transform: scale(0.97);
+    }
+
+    .btn-regenerate:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+
+    .btn-regenerate svg {
+        width: 12px;
+        height: 12px;
+        stroke: currentColor;
+        transition: transform 0.15s;
+    }
+
+    .btn-regenerate.loading svg {
+        animation: regenSpin 0.7s linear infinite;
+    }
+
+@keyframes regenSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/*login gate*/
+.ai-login-gate {
+    background: #f5f5fd;
+    border: 0.5px solid #dddaf8;
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ai-gate-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.ai-gate-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #e8e8fb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ai-gate-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.ai-gate-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a2e;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.ai-gate-sub {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.5;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.ai-gate-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.ai-gate-btn-login {
+    flex: 1;
+    padding: 9px 0;
+    border-radius: 8px;
+    background: #4f5fc4;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s;
+}
+
+    .ai-gate-btn-login:hover {
+        background: #3d4daf;
+    }
+
+.ai-gate-btn-dismiss {
+    padding: 9px 14px;
+    border-radius: 8px;
+    background: transparent;
+    color: #888;
+    font-size: 13px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+
+    .ai-gate-btn-dismiss:hover {
+        background: #f5f5f5;
+    }

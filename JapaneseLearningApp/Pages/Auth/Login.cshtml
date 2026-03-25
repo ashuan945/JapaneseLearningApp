@@ -1,0 +1,51 @@
+﻿@page
+@model JapaneseLearningApp.Pages.Auth.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/login_register.css" />
+}
+
+<div class="page-bg">
+    <div class="card">
+        <!-- App brand/logo -->
+        <div class="brand">
+            <div class="brand-dot"></div>
+            <span class="brand-text">日本語</span>
+        </div>
+
+        <!-- Heading -->
+        <div class="heading">Welcome back</div>
+        <div class="sub">Sign in to continue learning</div>
+
+        <!-- Username input -->
+        <div class="field">
+            <label for="username">Username</label>
+            <input id="username" type="text" placeholder="Enter your username" />
+        </div>
+
+        <!-- Password input -->
+        <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="Enter your password" />
+        </div>
+
+        <!-- Login button -->
+        <button class="btn-reg-log" onclick="login()">Sign in</button>
+
+        <!-- Message display (error/success) -->
+        <p class="message-reg-log" id="message"></p>
+
+        <!-- Link to register page -->
+        <div class="footer">
+            Don't have an account? <a href="/Auth/Register">Register</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/login.js"></script>
+}
